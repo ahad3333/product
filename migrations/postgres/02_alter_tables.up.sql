@@ -1,0 +1,4 @@
+
+ALTER TABLE book_category ADD COLUMN 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
