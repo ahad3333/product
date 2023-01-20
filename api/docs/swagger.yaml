@@ -59,6 +59,19 @@ definitions:
       price:
         type: number
     type: object
+  models.CreateUser:
+    properties:
+      created_at:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.Empty:
     type: object
   models.GetListCategoryResponse:
@@ -78,6 +91,15 @@ definitions:
         type: array
       count:
         type: integer
+    type: object
+  models.GetListUserResponse:
+    properties:
+      count:
+        type: integer
+      user:
+        items:
+          $ref: '#/definitions/models.User'
+        type: array
     type: object
   models.Product:
     properties:
@@ -137,6 +159,30 @@ definitions:
       price:
         type: number
     type: object
+  models.UpdateUserSwag:
+    properties:
+      login:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      login:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -188,7 +234,7 @@ paths:
         name: category
         required: true
         schema:
-          $ref: '#/definitions/models.CreateCategory'
+          $ref: '#/definitions/models.UpdateCategoryPut'
       produces:
       - application/json
       responses:
@@ -462,4 +508,165 @@ paths:
       summary: Update Product
       tags:
       - Product
+  /user:
+    get:
+      consumes:
+      - application/json
+      description: Get List user
+      operationId: UserPrimeryKey
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      - description: search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GetUserListBody
+          schema:
+            $ref: '#/definitions/models.GetListUserResponse'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Get List User
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: CreateUser
+      operationId: CreateUser
+      parameters:
+      - description: CreateUserRequestBody
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserSwag'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: GetUsertBody
+          schema:
+            $ref: '#/definitions/models.CreateUser'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: CreateUser
+      tags:
+      - User
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete User
+      operationId: DeleteUser
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: DeleteUserBody
+          schema:
+            $ref: '#/definitions/models.Empty'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Delete User
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: GetByID User
+      operationId: Get_By_IDUser
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: GetByIDUserBody
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: GetByID User
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Update User
+      operationId: UpdateUser
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: UpdateUserRequestBody
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserSwag'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: UpdateUserBody
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Update User
+      tags:
+      - User
 swagger: "2.0"

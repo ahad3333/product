@@ -11,9 +11,10 @@ import (
 )
 
 type Store struct {
-	db       *pgxpool.Pool
+	db       	*pgxpool.Pool
 	product     *ProductRepo
-	category *CategoryRepo
+	category    *CategoryRepo
+	user        *UserRepo
 }
 
 func NewPostgres(ctx context.Context, cfg config.Config) (storage.StorageI, error) {
@@ -42,7 +43,8 @@ func NewPostgres(ctx context.Context, cfg config.Config) (storage.StorageI, erro
 		db:       pool,
 		product:  NewProductRepo(pool),
 		category: NewCategoryRepo(pool),
-	}, nil
+		user: 	  NewUserRepo(pool),
+	},nil
 }
 
 func (s *Store) CloseDB() {
@@ -65,4 +67,13 @@ func (s *Store) Category() storage.CategoryRepoI {
 	}
 
 	return s.category
+}
+
+func (s *Store) User() storage.UserRepoI {
+
+	if s.user == nil {
+		s.user = NewUserRepo(s.db)
+	}
+
+	return s.user
 }

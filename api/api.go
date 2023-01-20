@@ -4,6 +4,8 @@ import (
 	_ "add/api/docs"
 	"add/api/handler"
 	"add/storage"
+	// "errors"
+	// "net/http"
 
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -14,6 +16,12 @@ import (
 func NewApi(r *gin.Engine, storage storage.StorageI) {
 
 	handlerV1 := handler.NewHandler(storage)
+
+	r.POST("/user", handlerV1.CreateUser)
+	r.GET("/user/:id", handlerV1.GetByIDUser)
+	r.GET("/user", handlerV1.GetListUser)
+	r.DELETE("/user/:id", handlerV1.DeleteUser)
+	r.PUT("/user/:id", handlerV1.UpdateUser)
 
 	r.POST("/product", handlerV1.CreateProduct)
 	r.GET("/product/:id", handlerV1.GetByIDProduct)

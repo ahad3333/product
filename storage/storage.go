@@ -9,6 +9,7 @@ type StorageI interface {
 	CloseDB()
 	Product() ProductRepoI
 	Category() CategoryRepoI
+	User() UserRepoI
 }
 
 type ProductRepoI interface {
@@ -26,4 +27,12 @@ type CategoryRepoI interface {
 	Update(ctx context.Context, category *models.UpdateCategory) error
 	Delete(ctx context.Context, req *models.CategoryPrimeryKey) error
 
+}
+
+type UserRepoI interface {
+	Insert(context.Context, *models.CreateUser) (string, error)
+	GetByID(context.Context, *models.UserPrimeryKey) (*models.User, error)
+	GetList(ctx context.Context, req *models.GetListUserRequest) (*models.GetListUserResponse, error)
+	Update(ctx context.Context, praduct *models.UpdateUser) error
+	Delete(ctx context.Context, req *models.UserPrimeryKey) error 
 }

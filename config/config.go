@@ -1,5 +1,6 @@
 package config
 
+
 type Config struct {
 	HTTPPort string
 
@@ -19,7 +20,7 @@ func Load() Config {
 
 	cfg.PostgresHost = "localhost"
 	cfg.PostgresUser = "postgres"
-	cfg.PostgresDatabase = "day9"
+	cfg.PostgresDatabase = "catalog"
 	cfg.PostgresPassword = "0003"
 	cfg.PostgresPort = "3003"
 	cfg.PostgresMaxConn = 30

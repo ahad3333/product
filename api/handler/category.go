@@ -20,7 +20,7 @@ import (
 // @Tags Category
 // @Accept json
 // @Produce json
-// @Param category body models.CreateCategory true "CreateCategoryRequestBody"
+// @Param category body models.UpdateCategoryPut true "CreateCategoryRequestBody"
 // @Success 201 {object} models.Category "GetCategoryBody"
 // @Response 400 {object} string "Invalid Argumant"
 // @Failure 500 {object} string "Server error"
