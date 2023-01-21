@@ -16,6 +16,147 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/branch": {
+            "post": {
+                "description": "CreateBranch",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Branch_1"
+                ],
+                "summary": "CreateBranch",
+                "operationId": "CreateBranch",
+                "parameters": [
+                    {
+                        "description": "CreateBranchRequestBody",
+                        "name": "Branch",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateBranch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "GetBranchtBody",
+                        "schema": {
+                            "$ref": "#/definitions/models.Branch"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Argumant",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bucket": {
+            "post": {
+                "description": "CreateBucket",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bucket_7"
+                ],
+                "summary": "CreateBucket",
+                "operationId": "CreateBucket",
+                "parameters": [
+                    {
+                        "description": "CreateBucketRequestBody",
+                        "name": "Bucket",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateBucket"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "GetBuckettBody",
+                        "schema": {
+                            "$ref": "#/definitions/models.Bucket"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Argumant",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/casier": {
+            "post": {
+                "description": "CreateCasier",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bucket_7"
+                ],
+                "summary": "CreateCasier",
+                "operationId": "CreateCasier",
+                "parameters": [
+                    {
+                        "description": "GetBucketByClientIDBody",
+                        "name": "Bucket",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.GetBucketByClientID"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "GetBucketByClientResponseBody",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetBucketByClientResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Argumant",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/category": {
             "get": {
                 "description": "Get List Category",
@@ -26,7 +167,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Category"
+                    "Category_4"
                 ],
                 "summary": "Get List Category",
                 "operationId": "get_list_category",
@@ -80,7 +221,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Category"
+                    "Category_4"
                 ],
                 "summary": "Create Category",
                 "operationId": "create_category",
@@ -127,7 +268,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Category"
+                    "Category_4"
                 ],
                 "summary": "Get By ID Category",
                 "operationId": "get_by_id_category",
@@ -170,7 +311,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Category"
+                    "Category_4"
                 ],
                 "summary": "Update Category",
                 "operationId": "update_category",
@@ -222,7 +363,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Category"
+                    "Category_4"
                 ],
                 "summary": "Delete Category",
                 "operationId": "delete_category",
@@ -257,6 +398,100 @@ const docTemplate = `{
                 }
             }
         },
+        "/client": {
+            "post": {
+                "description": "CreateClient",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Client_6"
+                ],
+                "summary": "CreateClient",
+                "operationId": "CreateClient",
+                "parameters": [
+                    {
+                        "description": "CreateClientRequestBody",
+                        "name": "Client",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateClient"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "GetClienttBody",
+                        "schema": {
+                            "$ref": "#/definitions/models.Client"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Argumant",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth_3"
+                ],
+                "summary": "Login",
+                "operationId": "Login",
+                "parameters": [
+                    {
+                        "description": "loginBodyRequest",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "LoginResponseBody",
+                        "schema": {
+                            "$ref": "#/definitions/models.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Argumant",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/product": {
             "get": {
                 "description": "Get List product",
@@ -267,7 +502,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Product"
+                    "Product_5"
                 ],
                 "summary": "Get List Product",
                 "operationId": "ProductPrimeryKey",
@@ -321,7 +556,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Product"
+                    "Product_5"
                 ],
                 "summary": "CreateProduct",
                 "operationId": "CreateProduct",
@@ -368,7 +603,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Product"
+                    "Product_5"
                 ],
                 "summary": "GetByID Product",
                 "operationId": "Get_By_IDProduct",
@@ -411,7 +646,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Product"
+                    "Product_5"
                 ],
                 "summary": "Update Product",
                 "operationId": "UpdateProduct",
@@ -463,7 +698,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Product"
+                    "Product_5"
                 ],
                 "summary": "Delete Product",
                 "operationId": "DeleteProduct",
@@ -508,7 +743,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "User_2"
                 ],
                 "summary": "Get List User",
                 "operationId": "UserPrimeryKey",
@@ -562,7 +797,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "User_2"
                 ],
                 "summary": "CreateUser",
                 "operationId": "CreateUser",
@@ -609,7 +844,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "User_2"
                 ],
                 "summary": "GetByID User",
                 "operationId": "Get_By_IDUser",
@@ -652,7 +887,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "User_2"
                 ],
                 "summary": "Update User",
                 "operationId": "UpdateUser",
@@ -704,7 +939,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "User_2"
                 ],
                 "summary": "Delete User",
                 "operationId": "DeleteUser",
@@ -741,9 +976,55 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Branch": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Bucket": {
+            "type": "object",
+            "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
+                "client_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "product": {
+                    "$ref": "#/definitions/models.Product"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Category": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -770,6 +1051,9 @@ const docTemplate = `{
         "models.CategoryPrduct": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -786,6 +1070,45 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Client": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateBranch": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateBucket": {
+            "type": "object",
+            "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
+                "client_id": {
+                    "type": "string"
+                },
+                "product_id": {
                     "type": "string"
                 }
             }
@@ -793,6 +1116,9 @@ const docTemplate = `{
         "models.CreateCategory": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -813,9 +1139,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.CreateClient": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.CreateProduct": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "category_id": {
                     "type": "string"
                 },
@@ -836,6 +1173,9 @@ const docTemplate = `{
         "models.CreateUser": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -855,6 +1195,25 @@ const docTemplate = `{
         },
         "models.Empty": {
             "type": "object"
+        },
+        "models.GetBucketByClientID": {
+            "type": "object",
+            "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
+                "client_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.GetBucketByClientResponse": {
+            "type": "object",
+            "properties": {
+                "total_price": {
+                    "type": "integer"
+                }
+            }
         },
         "models.GetListCategoryResponse": {
             "type": "object",
@@ -898,9 +1257,31 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Login": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Product": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "category_id": {
                     "$ref": "#/definitions/models.CategoryPrduct"
                 },
@@ -956,6 +1337,9 @@ const docTemplate = `{
         "models.UpdateCategoryPut": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "category_id": {
                     "type": "string"
                 },
@@ -990,6 +1374,9 @@ const docTemplate = `{
         "models.UpdateUserSwag": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "login": {
                     "type": "string"
                 },

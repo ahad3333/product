@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"errors"
-	// "fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -18,7 +17,7 @@ import (
 // @Router /product [POST]
 // @Summary CreateProduct
 // @Description CreateProduct
-// @Tags Product
+// @Tags Product_5
 // @Accept json
 // @Produce json
 // @Param product body models.CreateProduct true "CreateProductRequestBody"
@@ -60,7 +59,7 @@ func (h *Handler) CreateProduct(c *gin.Context) {
 // @Router /product/{id} [GET]
 // @Summary GetByID Product
 // @Description GetByID Product
-// @Tags Product
+// @Tags Product_5
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
@@ -88,7 +87,7 @@ func (h *Handler) GetByIDProduct(c *gin.Context) {
 // @Router /product [GET]
 // @Summary Get List Product
 // @Description Get List product
-// @Tags Product
+// @Tags Product_5
 // @Accept json
 // @Produce json
 // @Param offset query int false "offset"
@@ -146,7 +145,7 @@ func (h *Handler) GetListProduct(c *gin.Context) {
 // @Router /product/{id} [PUT]
 // @Summary Update Product
 // @Description Update Product
-// @Tags Product
+// @Tags Product_5
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
@@ -196,7 +195,7 @@ func (h *Handler) UpdateProduct(c *gin.Context) {
 // @Router /product/{id} [DELETE]
 // @Summary Delete Product
 // @Description Delete Product
-// @Tags Product
+// @Tags Product_5
 // @Accept json
 // @Produce json
 // @Param id path string true "id"

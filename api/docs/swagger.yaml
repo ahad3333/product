@@ -1,6 +1,36 @@
 definitions:
+  models.Branch:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Bucket:
+    properties:
+      branch_id:
+        type: string
+      client_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      product:
+        $ref: '#/definitions/models.Product'
+      product_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.Category:
     properties:
+      branch_id:
+        type: string
       created_at:
         type: string
       id:
@@ -18,6 +48,8 @@ definitions:
     type: object
   models.CategoryPrduct:
     properties:
+      branch_id:
+        type: string
       created_at:
         type: string
       id:
@@ -29,10 +61,37 @@ definitions:
       type_id:
         type: string
       updated_at:
+        type: string
+    type: object
+  models.Client:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.CreateBranch:
+    properties:
+      name:
+        type: string
+    type: object
+  models.CreateBucket:
+    properties:
+      branch_id:
+        type: string
+      client_id:
+        type: string
+      product_id:
         type: string
     type: object
   models.CreateCategory:
     properties:
+      branch_id:
+        type: string
       created_at:
         type: string
       id:
@@ -46,8 +105,15 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.CreateClient:
+    properties:
+      name:
+        type: string
+    type: object
   models.CreateProduct:
     properties:
+      branch_id:
+        type: string
       category_id:
         type: string
       description:
@@ -61,6 +127,8 @@ definitions:
     type: object
   models.CreateUser:
     properties:
+      branch_id:
+        type: string
       created_at:
         type: string
       login:
@@ -73,6 +141,18 @@ definitions:
         type: string
     type: object
   models.Empty:
+    type: object
+  models.GetBucketByClientID:
+    properties:
+      branch_id:
+        type: string
+      client_id:
+        type: string
+    type: object
+  models.GetBucketByClientResponse:
+    properties:
+      total_price:
+        type: integer
     type: object
   models.GetListCategoryResponse:
     properties:
@@ -101,8 +181,22 @@ definitions:
           $ref: '#/definitions/models.User'
         type: array
     type: object
+  models.Login:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  models.LoginResponse:
+    properties:
+      key:
+        type: string
+    type: object
   models.Product:
     properties:
+      branch_id:
+        type: string
       category_id:
         $ref: '#/definitions/models.CategoryPrduct'
       created_at:
@@ -139,6 +233,8 @@ definitions:
     type: object
   models.UpdateCategoryPut:
     properties:
+      branch_id:
+        type: string
       category_id:
         type: string
       name:
@@ -161,6 +257,8 @@ definitions:
     type: object
   models.UpdateUserSwag:
     properties:
+      branch_id:
+        type: string
       login:
         type: string
       name:
@@ -186,6 +284,99 @@ definitions:
 info:
   contact: {}
 paths:
+  /branch:
+    post:
+      consumes:
+      - application/json
+      description: CreateBranch
+      operationId: CreateBranch
+      parameters:
+      - description: CreateBranchRequestBody
+        in: body
+        name: Branch
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateBranch'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: GetBranchtBody
+          schema:
+            $ref: '#/definitions/models.Branch'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: CreateBranch
+      tags:
+      - Branch_1
+  /bucket:
+    post:
+      consumes:
+      - application/json
+      description: CreateBucket
+      operationId: CreateBucket
+      parameters:
+      - description: CreateBucketRequestBody
+        in: body
+        name: Bucket
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateBucket'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: GetBuckettBody
+          schema:
+            $ref: '#/definitions/models.Bucket'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: CreateBucket
+      tags:
+      - Bucket_7
+  /casier:
+    post:
+      consumes:
+      - application/json
+      description: CreateCasier
+      operationId: CreateCasier
+      parameters:
+      - description: GetBucketByClientIDBody
+        in: body
+        name: Bucket
+        required: true
+        schema:
+          $ref: '#/definitions/models.GetBucketByClientID'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: GetBucketByClientResponseBody
+          schema:
+            $ref: '#/definitions/models.GetBucketByClientResponse'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: CreateCasier
+      tags:
+      - Bucket_7
   /category:
     get:
       consumes:
@@ -222,7 +413,7 @@ paths:
             type: string
       summary: Get List Category
       tags:
-      - Category
+      - Category_4
     post:
       consumes:
       - application/json
@@ -252,7 +443,7 @@ paths:
             type: string
       summary: Create Category
       tags:
-      - Category
+      - Category_4
   /category/{id}:
     delete:
       consumes:
@@ -282,7 +473,7 @@ paths:
             type: string
       summary: Delete Category
       tags:
-      - Category
+      - Category_4
     get:
       consumes:
       - application/json
@@ -311,7 +502,7 @@ paths:
             type: string
       summary: Get By ID Category
       tags:
-      - Category
+      - Category_4
     put:
       consumes:
       - application/json
@@ -346,7 +537,69 @@ paths:
             type: string
       summary: Update Category
       tags:
-      - Category
+      - Category_4
+  /client:
+    post:
+      consumes:
+      - application/json
+      description: CreateClient
+      operationId: CreateClient
+      parameters:
+      - description: CreateClientRequestBody
+        in: body
+        name: Client
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateClient'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: GetClienttBody
+          schema:
+            $ref: '#/definitions/models.Client'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: CreateClient
+      tags:
+      - Client_6
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      operationId: Login
+      parameters:
+      - description: loginBodyRequest
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.Login'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: LoginResponseBody
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Invalid Argumant
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Login
+      tags:
+      - Auth_3
   /product:
     get:
       consumes:
@@ -383,7 +636,7 @@ paths:
             type: string
       summary: Get List Product
       tags:
-      - Product
+      - Product_5
     post:
       consumes:
       - application/json
@@ -413,7 +666,7 @@ paths:
             type: string
       summary: CreateProduct
       tags:
-      - Product
+      - Product_5
   /product/{id}:
     delete:
       consumes:
@@ -443,7 +696,7 @@ paths:
             type: string
       summary: Delete Product
       tags:
-      - Product
+      - Product_5
     get:
       consumes:
       - application/json
@@ -472,7 +725,7 @@ paths:
             type: string
       summary: GetByID Product
       tags:
-      - Product
+      - Product_5
     put:
       consumes:
       - application/json
@@ -507,7 +760,7 @@ paths:
             type: string
       summary: Update Product
       tags:
-      - Product
+      - Product_5
   /user:
     get:
       consumes:
@@ -544,7 +797,7 @@ paths:
             type: string
       summary: Get List User
       tags:
-      - User
+      - User_2
     post:
       consumes:
       - application/json
@@ -574,7 +827,7 @@ paths:
             type: string
       summary: CreateUser
       tags:
-      - User
+      - User_2
   /user/{id}:
     delete:
       consumes:
@@ -604,7 +857,7 @@ paths:
             type: string
       summary: Delete User
       tags:
-      - User
+      - User_2
     get:
       consumes:
       - application/json
@@ -633,7 +886,7 @@ paths:
             type: string
       summary: GetByID User
       tags:
-      - User
+      - User_2
     put:
       consumes:
       - application/json
@@ -668,5 +921,5 @@ paths:
             type: string
       summary: Update User
       tags:
-      - User
+      - User_2
 swagger: "2.0"

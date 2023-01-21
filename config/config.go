@@ -1,6 +1,5 @@
 package config
 
-
 type Config struct {
 	HTTPPort string
 
@@ -10,6 +9,8 @@ type Config struct {
 	PostgresPassword string
 	PostgresPort     string
 	PostgresMaxConn  int32
+
+	SecretKey string
 }
 
 func Load() Config {
@@ -24,6 +25,8 @@ func Load() Config {
 	cfg.PostgresPassword = "0003"
 	cfg.PostgresPort = "3003"
 	cfg.PostgresMaxConn = 30
+
+	cfg.SecretKey = "secret"
 
 	return cfg
 }

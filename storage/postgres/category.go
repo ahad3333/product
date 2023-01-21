@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/lib/pq"
 )
+
 type CategoryRepo struct {
 	db *pgxpool.Pool
 }
@@ -24,62 +25,62 @@ func NewCategoryRepo(db *pgxpool.Pool) *CategoryRepo {
 func (r *CategoryRepo) Insert(ctx context.Context, req *models.CreateCategory) (string, error) {
 	var (
 		id = uuid.New().String()
-
 	)
 	if req.CategoryId == "" {
-	fmt.Println(req.CategoryId)
-		
-	
-	query := `
-	INSERT INTO category (
-		id,
-		name,
-		photo,
-		updated_at
-	) VALUES ($1, $2, $3, now())
-`
+		fmt.Println(req.CategoryId)
 
-	_, err := r.db.Exec(ctx, query,
-		id,
-		req.Name,
-		req.Photo,
-	)
+		query := `
+			INSERT INTO category (
+				id,
+				name,
+				photo,
+				branch_id,
+				updated_at
+			) VALUES ($1, $2, $3, $4, now())
+		`
 
-	if err != nil {
-		return "", err
+		_, err := r.db.Exec(ctx, query,
+			id,
+			req.Name,
+			req.Photo,
+			req.BranchId,
+		)
+
+		if err != nil {
+			return "", err
+		}
+		return id, nil
 	}
-	return id, nil
 
-}
-if req.CategoryId != "" {
-	fmt.Println(req.CategoryId)
-		
-	
-	query := `
-	INSERT INTO category (
-		id,
-		name,
-		photo,
-		type_id,
-		updated_at
-	) VALUES ($1, $2, $3, $4, now())
-`
+	if req.CategoryId != "" {
 
-	_, err := r.db.Exec(ctx, query,
-		id,
-		req.Name,
-		req.Photo,
-		req.CategoryId,
-	)
+		query := `
+			INSERT INTO category (
+				id,
+				name,
+				photo,
+				type_id,
+				branch_id,
+				updated_at
+			) VALUES ($1, $2, $3, $4, $5, now())
+		`
 
-	if err != nil {
-		return "", err
+		_, err := r.db.Exec(ctx, query,
+			id,
+			req.Name,
+			req.Photo,
+			req.CategoryId,
+			req.BranchId,
+		)
+
+		if err != nil {
+			return "", err
+		}
+		return id, nil
+
 	}
-	return id, nil
+	return "", nil
 
-}
-return "", nil
-	
 }
 
 func (r *CategoryRepo) GetByID(ctx context.Context, req *models.CategoryPrimeryKey) (*models.Category, error) {
@@ -100,39 +101,38 @@ from category as c
 where c.id = $1
 `
 
-var (
-	id           sql.NullString
-	name         sql.NullString
-	photo        sql.NullString
-	createdAt    sql.NullString
-	updatedAt    sql.NullString
-	categorys []string
-)
-
-err := r.db.QueryRow(ctx, query, req.Id).
-	Scan(
-		&id,
-		&name,
-		&photo,
-		&createdAt,
-		&updatedAt,
-		(*pq.StringArray)(&categorys),
+	var (
+		id        sql.NullString
+		name      sql.NullString
+		photo     sql.NullString
+		createdAt sql.NullString
+		updatedAt sql.NullString
+		categorys []string
 	)
-if err != nil {
-	return nil, err
-}
 
-category := &models.Category{
-	Id:          id.String,
-	Name:        name.String,
-	Photo: 		 photo.String,
-	CreatedAt:   createdAt.String,
-	UpdatedAt:   updatedAt.String,
+	err := r.db.QueryRow(ctx, query, req.Id).
+		Scan(
+			&id,
+			&name,
+			&photo,
+			&createdAt,
+			&updatedAt,
+			(*pq.StringArray)(&categorys),
+		)
+	if err != nil {
+		return nil, err
+	}
 
-}
+	category := &models.Category{
+		Id:        id.String,
+		Name:      name.String,
+		Photo:     photo.String,
+		CreatedAt: createdAt.String,
+		UpdatedAt: updatedAt.String,
+	}
 
-if len(categorys) > 0 {
-	typeQuery := `
+	if len(categorys) > 0 {
+		typeQuery := `
 			SELECT
 				id,
 				name,
@@ -150,53 +150,52 @@ if len(categorys) > 0 {
 		typeQuery = typeQuery[:len(typeQuery)-1]
 		typeQuery += ")"
 		rows, err := r.db.Query(ctx, typeQuery)
-	if err != nil {
-		return nil, err
-	}
-	
-  defer rows.Close()
-	for rows.Next() {
-
-		var (
-			id           sql.NullString
-			name         sql.NullString
-			photo        sql.NullString
-			type_id      sql.NullString
-			createdAt    sql.NullString
-			updatedAt    sql.NullString
-		)
-
-		err = rows.Scan(
-			&id,
-			&name,
-			&photo,
-			&type_id,
-			&createdAt,
-			&updatedAt,
-		)
-		types := &models.CategoryPrduct{
-			Id:        id.String,
-			Name:       name.String,
-			Photo:      photo.String,
-			CategoryId: type_id.String,
-			CreatedAt:  createdAt.String,
-			UpdatedAt:  updatedAt.String,
+		if err != nil {
+			return nil, err
 		}
-		category.Type = append(category.Type,types)
+
+		defer rows.Close()
+		for rows.Next() {
+
+			var (
+				id        sql.NullString
+				name      sql.NullString
+				photo     sql.NullString
+				type_id   sql.NullString
+				createdAt sql.NullString
+				updatedAt sql.NullString
+			)
+
+			err = rows.Scan(
+				&id,
+				&name,
+				&photo,
+				&type_id,
+				&createdAt,
+				&updatedAt,
+			)
+			types := &models.CategoryPrduct{
+				Id:         id.String,
+				Name:       name.String,
+				Photo:      photo.String,
+				CategoryId: type_id.String,
+				CreatedAt:  createdAt.String,
+				UpdatedAt:  updatedAt.String,
+			}
+			category.Type = append(category.Type, types)
+		}
 	}
-}
-return category, nil
+	return category, nil
 }
 
-func (r *CategoryRepo)GetList(ctx context.Context, req *models.GetListCategoryRequest) (*models.GetListCategoryResponse, error) {
+func (r *CategoryRepo) GetList(ctx context.Context, req *models.GetListCategoryRequest) (*models.GetListCategoryResponse, error) {
 
 	var (
 		resp   models.GetListCategoryResponse
 		offset = " OFFSET 0"
 		limit  = " LIMIT 10"
 		search = req.Search
-		f ="%"
-
+		f      = "%"
 	)
 	query := `
 		SELECT
@@ -210,8 +209,8 @@ func (r *CategoryRepo)GetList(ctx context.Context, req *models.GetListCategoryRe
 		FROM category
 		where  type_id is null
 	`
-	if search !="" {
-		search = fmt.Sprintf("and name like  '%s%s' ", req.Search,f)
+	if search != "" {
+		search = fmt.Sprintf("and name like  '%s%s' ", req.Search, f)
 		query += search
 	}
 	if req.Offset > 0 {
@@ -221,19 +220,19 @@ func (r *CategoryRepo)GetList(ctx context.Context, req *models.GetListCategoryRe
 	if req.Limit > 0 {
 		limit = fmt.Sprintf(" LIMIT %d", req.Limit)
 	}
-	query += offset + limit 
-	rows, err := r.db.Query(ctx,query)
+	query += offset + limit
+	rows, err := r.db.Query(ctx, query)
 	defer rows.Close()
 	if err != nil {
 		return &models.GetListCategoryResponse{}, err
 	}
 	var (
-		id        	sql.NullString
-		name      	sql.NullString
-		photo 		sql.NullString
-		type_id		sql.NullString
-		createdAt	sql.NullString
-		updatedAt 	sql.NullString
+		id        sql.NullString
+		name      sql.NullString
+		photo     sql.NullString
+		type_id   sql.NullString
+		createdAt sql.NullString
+		updatedAt sql.NullString
 	)
 
 	for rows.Next() {
@@ -250,12 +249,12 @@ func (r *CategoryRepo)GetList(ctx context.Context, req *models.GetListCategoryRe
 			return &models.GetListCategoryResponse{}, err
 		}
 		category := models.CreateCategory{
-			Id:          id.String,
-			Name:        name.String,
-			Photo:    	 photo.String,
-			CategoryId:  type_id.String,
-			CreatedAt:   createdAt.String,
-			UpdatedAt:   updatedAt.String,
+			Id:         id.String,
+			Name:       name.String,
+			Photo:      photo.String,
+			CategoryId: type_id.String,
+			CreatedAt:  createdAt.String,
+			UpdatedAt:  updatedAt.String,
 		}
 		resp.Categories = append(resp.Categories, &category)
 
@@ -264,10 +263,10 @@ func (r *CategoryRepo)GetList(ctx context.Context, req *models.GetListCategoryRe
 	return &resp, nil
 }
 
-func (r *CategoryRepo)Update(ctx context.Context, Category *models.UpdateCategory) error {
+func (r *CategoryRepo) Update(ctx context.Context, Category *models.UpdateCategory) error {
 
-	if Category.CategoryId!="" {
-	query := `
+	if Category.CategoryId != "" {
+		query := `
 		UPDATE 
 		Category
 		SET 
@@ -277,17 +276,17 @@ func (r *CategoryRepo)Update(ctx context.Context, Category *models.UpdateCategor
 		WHERE id = $1
 	`
 
-	_, err := r.db.Exec(ctx,query,
-		Category.Id,
-		Category.Name,
-		Category.Photo,
-		Category.CategoryId,
-	)
-	if err != nil {
-		return err
-	}
-}else{
-	query := `
+		_, err := r.db.Exec(ctx, query,
+			Category.Id,
+			Category.Name,
+			Category.Photo,
+			Category.CategoryId,
+		)
+		if err != nil {
+			return err
+		}
+	} else {
+		query := `
 		UPDATE 
 		Category
 		SET 
@@ -296,25 +295,25 @@ func (r *CategoryRepo)Update(ctx context.Context, Category *models.UpdateCategor
 		WHERE id = $1
 	`
 
-	_, err := r.db.Exec(ctx,query,
-		Category.Id,
-		Category.Name,
-		Category.Photo,
-	)
-	if err != nil {
-		return err
+		_, err := r.db.Exec(ctx, query,
+			Category.Id,
+			Category.Name,
+			Category.Photo,
+		)
+		if err != nil {
+			return err
+		}
 	}
-}
 
 	return nil
 }
 
-func (r *CategoryRepo)Delete(ctx context.Context, req *models.CategoryPrimeryKey) error {
-	_, err := r.db.Exec(ctx,"DELETE FROM product WHERE category_id  = $1 ", req.Id)
+func (r *CategoryRepo) Delete(ctx context.Context, req *models.CategoryPrimeryKey) error {
+	_, err := r.db.Exec(ctx, "DELETE FROM product WHERE category_id  = $1 ", req.Id)
 	if err != nil {
 		return err
 	}
-	_, err = r.db.Exec(ctx,"DELETE FROM category WHERE id = $1 ", req.Id)
+	_, err = r.db.Exec(ctx, "DELETE FROM category WHERE id = $1 ", req.Id)
 
 	if err != nil {
 		return err

@@ -7,3 +7,6 @@ swag-gen:
 migration-up:
 	migrate -path ./migrations/postgres/ -database 'postgres://postgres:0003@localhost:3003/catalog?sslmode=disable' up
 
+migration-down:
+	migrate -path ./migrations/postgres/ -database 'postgres://postgres:0003@localhost:3003/catalog?sslmode=disable' down
+

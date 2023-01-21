@@ -2,11 +2,12 @@ package main
 
 import (
 	"add/api"
-	"context"
 	"add/config"
 	"add/storage/postgres"
-	"github.com/gin-gonic/gin"
+	"context"
 	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -23,7 +24,7 @@ func main() {
 
 	r.Use(gin.Logger(), gin.Recovery())
 
-	api.NewApi(r, storage)
+	api.NewApi(r, cfg, storage)
 
 	err = r.Run(cfg.HTTPPort)
 	if err != nil {

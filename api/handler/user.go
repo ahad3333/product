@@ -17,7 +17,7 @@ import (
 // @Router /user [POST]
 // @Summary CreateUser
 // @Description CreateUser
-// @Tags User
+// @Tags User_2
 // @Accept json
 // @Produce json
 // @Param user body models.UpdateUserSwag true "CreateUserRequestBody"
@@ -42,16 +42,17 @@ func (h *Handler) CreateUser(c *gin.Context) {
 		return
 	}
 
-	// resp, err := h.storage.Product().GetByID(context.Background(), &models.ProductPrimeryKey{
-	// 	Id: id,
-	// })
-	// if err != nil {
-	// 	log.Println("error whiling get by id book:", err.Error())
-	// 	c.JSON(http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	res, err := h.storage.User().GetByID(context.Background(), &models.UserPrimeryKey{
+		Id: id,
+	})
 
-	c.JSON(http.StatusCreated, id)
+	if err != nil {
+		log.Println("error whiling get by id product:", err.Error())
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusCreated, res)
 }
 
 // GetByIDUser godoc
@@ -59,7 +60,7 @@ func (h *Handler) CreateUser(c *gin.Context) {
 // @Router /user/{id} [GET]
 // @Summary GetByID User
 // @Description GetByID User
-// @Tags User
+// @Tags User_2
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
@@ -87,7 +88,7 @@ func (h *Handler) GetByIDUser(c *gin.Context) {
 // @Router /user [GET]
 // @Summary Get List User
 // @Description Get List user
-// @Tags User
+// @Tags User_2
 // @Accept json
 // @Produce json
 // @Param offset query int false "offset"
@@ -103,8 +104,7 @@ func (h *Handler) GetListUser(c *gin.Context) {
 		limit     int
 		offsetStr = c.Query("offset")
 		limitStr  = c.Query("limit")
-		search = c.Query("search")
-
+		search    = c.Query("search")
 	)
 
 	if offsetStr != "" {
@@ -125,7 +125,7 @@ func (h *Handler) GetListUser(c *gin.Context) {
 		}
 	}
 
-	res, err := h.storage.User().GetList(context.Background(),&models.GetListUserRequest{
+	res, err := h.storage.User().GetList(context.Background(), &models.GetListUserRequest{
 		Offset: int64(offset),
 		Limit:  int64(limit),
 		Search: search,
@@ -145,7 +145,7 @@ func (h *Handler) GetListUser(c *gin.Context) {
 // @Router /user/{id} [PUT]
 // @Summary Update User
 // @Description Update User
-// @Tags User
+// @Tags User_2
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
@@ -167,11 +167,11 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	 err = h.storage.User().Update(context.Background(),&models.UpdateUser{
-		Id: id,
-		Name: user.Name,
-		Login: user.Login,
-		Password: user.Password,
+	err = h.storage.User().Update(context.Background(), &models.UpdateUser{
+		Id:        id,
+		Name:      user.Name,
+		Login:     user.Login,
+		Password:  user.Password,
 		UpdatedAt: user.UpdatedAt,
 	})
 	if err != nil {
@@ -187,7 +187,7 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 // @Router /user/{id} [DELETE]
 // @Summary Delete User
 // @Description Delete User
-// @Tags User
+// @Tags User_2
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
@@ -197,7 +197,7 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 func (h *Handler) DeleteUser(c *gin.Context) {
 	id := c.Param("id")
 
-	err := h.storage.User().Delete(context.Background(),&models.UserPrimeryKey{Id: id})
+	err := h.storage.User().Delete(context.Background(), &models.UserPrimeryKey{Id: id})
 	if err != nil {
 		log.Println("error whiling delete  User:", err.Error())
 		c.JSON(http.StatusNoContent, err.Error())

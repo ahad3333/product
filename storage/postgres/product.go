@@ -2,8 +2,8 @@ package postgres
 
 import (
 	"add/models"
-	"database/sql"
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -34,8 +34,9 @@ func (r *ProductRepo) Insert(ctx context.Context, req *models.CreateProduct) (st
 		description,
 		photo,
 		category_id,
+		branch_id,
 		updated_at
-	) VALUES ($1, $2, $3, $4,$5,$6, now())
+	) VALUES ($1, $2, $3, $4, $5, $6, $7, now())
 `
 
 	_, err := r.db.Exec(ctx, query,
@@ -45,28 +46,29 @@ func (r *ProductRepo) Insert(ctx context.Context, req *models.CreateProduct) (st
 		req.Description,
 		req.Photo,
 		req.CategoryId,
+		req.BranchId,
 	)
 
 	if err != nil {
 		return "", err
 	}
-	
 
 	return id, nil
 }
 
 func (r *ProductRepo) GetByID(ctx context.Context, req *models.ProductPrimeryKey) (*models.Product, error) {
 
-	query := `select 
-			id,
-			name,
-			price,
-			description,
-			photo,
-			category_id,
-			updated_at
-	from product 
-	where id = $1
+	query := `
+		select 
+				id,
+				name,
+				price,
+				description,
+				photo,
+				category_id,
+				updated_at
+		from product 
+		where id = $1
 	`
 
 	queryCategory := `select 
@@ -83,7 +85,7 @@ func (r *ProductRepo) GetByID(ctx context.Context, req *models.ProductPrimeryKey
 		name        sql.NullString
 		price       sql.NullFloat64
 		description sql.NullString
-		photo    	sql.NullString
+		photo       sql.NullString
 		createdAt   sql.NullString
 		updatedAt   sql.NullString
 	)
@@ -107,7 +109,7 @@ func (r *ProductRepo) GetByID(ctx context.Context, req *models.ProductPrimeryKey
 		Name:        name.String,
 		Price:       price.Float64,
 		Description: description.String,
-		Photo:        photo.String,	
+		Photo:       photo.String,
 		CreatedAt:   createdAt.String,
 		UpdatedAt:   updatedAt.String,
 	}
@@ -118,21 +120,19 @@ func (r *ProductRepo) GetByID(ctx context.Context, req *models.ProductPrimeryKey
 		&categorys.Photo,
 	)
 
-
-
-praduct.CategoryId = categorys		
+	praduct.CategoryId = categorys
 
 	return praduct, nil
 }
 
-func (r *ProductRepo)GetList(ctx context.Context, req *models.GetListProductRequest) (*models.GetListProductResponse, error) {
+func (r *ProductRepo) GetList(ctx context.Context, req *models.GetListProductRequest) (*models.GetListProductResponse, error) {
 
 	var (
 		resp   models.GetListProductResponse
 		offset = " OFFSET 0"
 		limit  = " LIMIT 10"
 		search = req.Search
-		f ="%"
+		f      = "%"
 	)
 
 	query := `
@@ -147,8 +147,8 @@ func (r *ProductRepo)GetList(ctx context.Context, req *models.GetListProductRequ
 			updated_at 
 		FROM product
 	`
-	if search !="" {
-		search = fmt.Sprintf("where name like  '%s%s' ", req.Search,f)
+	if search != "" {
+		search = fmt.Sprintf("where name like  '%s%s' ", req.Search, f)
 		query += search
 	}
 	if req.Offset > 0 {
@@ -177,7 +177,6 @@ func (r *ProductRepo)GetList(ctx context.Context, req *models.GetListProductRequ
 
 	for rows.Next() {
 
-
 		err = rows.Scan(
 			&resp.Count,
 			&id,
@@ -200,15 +199,14 @@ func (r *ProductRepo)GetList(ctx context.Context, req *models.GetListProductRequ
 		if err != nil {
 			return &models.GetListProductResponse{}, err
 		}
-		
-		resp.Products = append(resp.Products, &praduct)
 
+		resp.Products = append(resp.Products, &praduct)
 
 	}
 	return &resp, nil
 }
 
-func (r *ProductRepo)Update(ctx context.Context, praduct *models.UpdateProduct) error {
+func (r *ProductRepo) Update(ctx context.Context, praduct *models.UpdateProduct) error {
 	query := `
 		UPDATE 
 			product
@@ -221,7 +219,7 @@ func (r *ProductRepo)Update(ctx context.Context, praduct *models.UpdateProduct) 
 		WHERE id = $1
 	`
 
-	_, err := r.db.Exec(ctx,query,
+	_, err := r.db.Exec(ctx, query,
 		praduct.Id,
 		praduct.Name,
 		praduct.Price,
@@ -237,8 +235,8 @@ func (r *ProductRepo)Update(ctx context.Context, praduct *models.UpdateProduct) 
 	return nil
 }
 
-func (r *ProductRepo)Delete(ctx context.Context, req *models.ProductPrimeryKey) error {
-	
+func (r *ProductRepo) Delete(ctx context.Context, req *models.ProductPrimeryKey) error {
+
 	_, err := r.db.Exec(ctx, "DELETE FROM product WHERE id = $1", req.Id)
 
 	if err != nil {

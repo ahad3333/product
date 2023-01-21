@@ -17,7 +17,7 @@ import (
 // @Router /category [POST]
 // @Summary Create Category
 // @Description Create Category
-// @Tags Category
+// @Tags Category_4
 // @Accept json
 // @Produce json
 // @Param category body models.UpdateCategoryPut true "CreateCategoryRequestBody"
@@ -59,7 +59,7 @@ func (h *Handler) CreateCategory(c *gin.Context) {
 // @Router /category/{id} [GET]
 // @Summary Get By ID Category
 // @Description Get By ID Category
-// @Tags Category
+// @Tags Category_4
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
@@ -87,7 +87,7 @@ func (h *Handler) GetByIdCategory(c *gin.Context) {
 // @Router /category [GET]
 // @Summary Get List Category
 // @Description Get List Category
-// @Tags Category
+// @Tags Category_4
 // @Accept json
 // @Produce json
 // @Param offset query int false "offset"
@@ -144,7 +144,7 @@ func (h *Handler) GetListCategory(c *gin.Context) {
 // @Router /category/{id} [PUT]
 // @Summary Update Category
 // @Description Update Category
-// @Tags Category
+// @Tags Category_4
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
@@ -211,7 +211,7 @@ func (h *Handler) UpdateCategory(c *gin.Context) {
 // @Router /category/{id} [DELETE]
 // @Summary Delete Category
 // @Description Delete Category
-// @Tags Category
+// @Tags Category_4
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
